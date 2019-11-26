@@ -34,6 +34,6 @@ class HertzVehicleSync implements ShouldQueue
      */
     public function handle()
     {
-       $this->hertzService->getAvailableVehiclesByLocation( $this->params );
+       return $this->hertzService->getAvailableVehiclesByLocation( $this->params );
     }
 }
