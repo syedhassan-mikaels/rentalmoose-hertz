@@ -302,9 +302,9 @@ class HertzService
 
     public function getAvailableVehiclesByLocation($params){
         try{
-            $pickupDateTime = $params['pickup_date_time'] ?? '2019-11-26T15:45:00' ;
-            $returnDateTime = $params['return_date_time'] ?? '2019-11-30T13:30:00' ;
-            $locationCode   = $params['location_code'] ?? 'ANGX91';
+            $pickupDateTime = $params['pickup_date_time'] ?? '' ;//2019-11-26T15:45:00
+            $returnDateTime = $params['return_date_time'] ?? '' ;//2019-11-30T13:30:00
+            $locationCode   = $params['location_code'] ?? '';//ANGX91
 
             $xmlArrayStruct = [
                 'rootElement'=> [
