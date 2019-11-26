@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\HertzVehicleSync;
 use Illuminate\Http\Request;
 use File;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Jobs\ImportSupplierStation;
-use GuzzleHttp\Client;
-use Spatie\ArrayToXml\ArrayToXml;
-use Vyuldashev\XmlToArray\XmlToArray;
 use HertzService;
 
 
@@ -56,11 +52,12 @@ class HomeController extends Controller
 
 
     public function getAvailableCarsByLocation(){
-        $pickupDateTime = $this->request->pickup_date_time;
-        $returnDateTime = $this->request->return_date_time;
-        $locationCode   = $this->request->location_code;
-
-        dd($this->hertzService->getAvailableCarsByLocation($this->request));
+        $params = [
+            'pickup_date_time' => $this->request->pickup_date_time,
+            'return_date_time' => $this->request->return_date_time,
+            'location_code' => $this->request->location_code,
+        ];
+        HertzVehicleSync::dispatch($params);
 
     }
 

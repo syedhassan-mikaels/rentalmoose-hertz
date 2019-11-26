@@ -54,6 +54,83 @@ class HertzService
             '39'=>'premium elite' ,
             '40'=>'luxury elite' ,
             '41'=>'oversize'
+        ],
+        'CarCode'=>[
+            'Size'=>[
+                'M' => 'Mini',
+                'N' => 'Mini Elite',
+                'E' => 'Economy',
+                'H' => 'Economy Elite',
+                'C' => 'Compact',
+                'D' => 'Compact Elite',
+                'I' => 'Intermediate',
+                'J' => 'Intermediate Elite',
+                'S' => 'Standard',
+                'R' => 'Standard Elite',
+                'F' => 'Fullsize',
+                'G' => 'Fullsize Elite',
+                'P' => 'Premium',
+                'U' => 'Premium Elite',
+                'L' => 'Luxury',
+                'W' => 'Luxury Elite',
+                'X' => 'Special',
+                'O' => 'Oversize',
+
+            ],
+            'Category'=>[
+                'B'=> '2-door car',
+                'C'=> 'Car (2/4 door)',
+                'D'=> '4-door car',
+                'W'=> 'Wagon',
+                'V'=> 'Van',
+                'L'=> 'Limo',
+                'S'=> 'Sports Car',
+                'T'=> 'Convertible',
+                'F'=> 'Four Wheel Drive',
+                'J'=> 'All-Terrain Vehicle',
+                'X'=> 'Special',
+                'P'=> 'Pickup Regular Cab',
+                'Q'=> 'Pickup Extended Cab',
+                'Z'=> 'Special Offer Car',
+                'E'=> 'Coupe',
+                'M'=> 'Monospace',
+                'R'=> 'Recreational Vehicle',
+                'H'=> 'Motor Home',
+                'Y'=> '2 Wheel Vehicle',
+                'N'=> 'Roadster',
+                'G'=> 'Crossover',
+                'K'=> 'Commerical Van/Truck',
+            ],
+            'Drive/Trans'=>[
+                'M' => 'Manual Unspecified Drive',
+                'N' => 'Manual 4WD',
+                'C' => 'Manual AWD',
+                'A' => 'Auto Unspecified Drive',
+                'B' => 'Auto 4WD',
+                'D' => 'Auto AWD',
+
+            ],
+            'Fuel/Air'=>[
+                'R'=> 'Unspecified Fuel/with air',
+                'N'=> 'Unspecified Fuel/no air',
+                'D'=> 'Diesel with Air',
+                'Q'=> 'Diesel No Air',
+                'H'=> 'Hybrid with Air',
+                'I'=> 'Hybrid No Air',
+                'E'=> 'Electric with Air',
+                'C'=> 'Electric No Air',
+                'L'=> 'LPG/Compressed Gas Air',
+                'S'=> 'LPG/Compressed Gas No Air',
+                'A'=> 'Hyrogen with Air',
+                'B'=> 'Hyrogen No Air',
+                'M'=> 'Multi Fuel with Air',
+                'F'=> 'Multi Fuel No Air',
+                'V'=> 'Petrol with Air',
+                'Z'=> 'Petrol No Air',
+                'U'=> 'Ethanol with Air',
+                'X'=> 'Ethanol No Air',
+
+            ],
         ]
     ];
     private $dumbXML = '<OTA_VehAvailRateRS
@@ -221,86 +298,109 @@ class HertzService
         </VehAvailRSCore>
     </OTA_VehAvailRateRS>';
 
-    public function getAvailableCarsByLocation($request){
+    public function __construct(){}
 
-        $pickupDateTime = $request->pickup_date_time;
-        $returnDateTime = $request->return_date_time;
-        $locationCode   = $request->location_code;
+    public function getAvailableVehiclesByLocation($params){
+        try{
+            $pickupDateTime = $params['pickup_date_time'] ?? '2019-11-26T15:45:00' ;
+            $returnDateTime = $params['return_date_time'] ?? '2019-11-30T13:30:00' ;
+            $locationCode   = $params['location_code'] ?? 'ANGX91';
 
-        $xmlArrayStruct = [
-            'rootElement'=> [
-                'rootElementName' => 'OTA_VehAvailRateRQ',
-                '_attributes' => [
-                    'xmlns' => 'http://www.opentravel.org/OTA/2003/05',
-                    'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-                    'xsi:schemaLocation' => 'http://www.opentravel.org/OTA/2003/05 OTA_VehAvailRateRQ.xsd',
-                    'Version'=>'2.007',
-                    'SequenceNmbr'=>'123456789',
-                    'MaxResponses'=>'5'
+            $xmlArrayStruct = [
+                'rootElement'=> [
+                    'rootElementName' => 'OTA_VehAvailRateRQ',
+                    '_attributes' => [
+                        'xmlns' => 'http://www.opentravel.org/OTA/2003/05',
+                        'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+                        'xsi:schemaLocation' => 'http://www.opentravel.org/OTA/2003/05 OTA_VehAvailRateRQ.xsd',
+                        'Version'=>'2.007',
+                        'SequenceNmbr'=>'123456789',
+                        'MaxResponses'=>'5'
+                    ],
                 ],
-            ],
-            'childElements'=> [
-                'POS' => [
-                    'Source'=>[
-                        '_attributes' => [
-                            'ISOCountry'=>'PK' ,
-                            'AgentDutyCode'=>'M18R5E14N20'
-                        ],
-                        'RequestorID'=>[
+                'childElements'=> [
+                    'POS' => [
+                        'Source'=>[
                             '_attributes' => [
-                                'Type'=>'4' ,
-                                'ID'=>'T927'
+                                'ISOCountry'=>'PK' ,
+                                'AgentDutyCode'=>'M18R5E14N20'
                             ],
-                            'CompanyName'=>[
+                            'RequestorID'=>[
                                 '_attributes' => [
-                                    'Code'=>'CP' ,
-                                    'CodeContext'=>'6UAC'
+                                    'Type'=>'4' ,
+                                    'ID'=>'T927'
+                                ],
+                                'CompanyName'=>[
+                                    '_attributes' => [
+                                        'Code'=>'CP' ,
+                                        'CodeContext'=>'6UAC'
+                                    ]
                                 ]
                             ]
                         ]
-                    ]
-                ],
-                'VehAvailRQCore' => [
-                    '_attributes' => [
-                        'Status'=>'All'
                     ],
-                    'VehRentalCore'=>[
+                    'VehAvailRQCore' => [
                         '_attributes' => [
-                            'PickUpDateTime'=>'2019-11-26T15:45:00',
-                            'ReturnDateTime'=>'2019-11-30T13:30:00',
+                            'Status'=>'All'
                         ],
-                        'PickUpLocation'=>[
-                            'LocationCode'=>'ANGX91',
-                            'CodeContext'=>'IATA'
-                        ],
-                        'ReturnLocation'=>[
-                            'LocationCode'=>'ANGX91',
-                            'CodeContext'=>'IATA'
+                        'VehRentalCore'=>[
+                            '_attributes' => [
+                                'PickUpDateTime'=> $pickupDateTime,
+                                'ReturnDateTime'=> $returnDateTime,
+                            ],
+                            'PickUpLocation'=>[
+                                'LocationCode'=> $locationCode,
+                                'CodeContext'=>'IATA'
+                            ],
+                            'ReturnLocation'=>[
+                                'LocationCode'=> $locationCode,
+                                'CodeContext'=>'IATA'
+                            ]
                         ]
                     ]
                 ]
-            ]
-        ];
-        $xmlPayload = ArrayToXml::convert( $xmlArrayStruct['childElements'], $xmlArrayStruct['rootElement'] );
-        $options = [
-            'headers' => [
-                'Content-Type' => 'application/xml',
-                'Accept' => 'application/xml',
-            ],
-            'body' => $xmlPayload
-        ];
+            ];
+            $xmlPayload = ArrayToXml::convert( $xmlArrayStruct['childElements'], $xmlArrayStruct['rootElement'] );
 
-        $client = new \GuzzleHttp\Client();
-        $apiRequest = $client->request('POST', 'https://vv.xqual.hertz.com/ota2007a', $options);
-        $xmlResponse = $apiRequest->getBody()->getContents();
+            $options = [
+                'headers' => [
+                    'Content-Type' => 'application/xml',
+                    'Accept' => 'application/xml',
+                ],
+                'body' => $xmlPayload
+            ];
 
-        $xmlConvertedArray = xmlToArray($xmlResponse);
-        $records = $this->xmlMapperToDBColumn($xmlConvertedArray);
+            $client = new \GuzzleHttp\Client();
+            $apiRequest = $client->request('POST', 'https://vv.xqual.hertz.com/ota2007a', $options);
+            $xmlResponse = $apiRequest->getBody()->getContents();
+            //dd($xmlResponse);
+            $xmlConvertedArray = xmlToArray($xmlResponse);
 
-        //dd($records);
-        DB::table('vehicles')->insert($records);
-        //dd("Inserted");
-        //return $response;
+            if( array_key_exists('Success',$xmlConvertedArray) ){
+
+                $records = $this->xmlMapperToDBColumn($xmlConvertedArray);
+                $recordInserted = DB::table('vehicles')->insert($records);
+                return [
+                    "status" => true,
+                    "data" => $records,
+                    "message" => "Hertz vehicles has been inserted successfully"
+                ];
+
+            }else{
+                return [
+                    "status" => false,
+                    "message" => arrayValueByDottedKey( "Errors.Error.@attributes.ShortText", $xmlConvertedArray )
+                ];
+
+            }
+
+        }catch (\Exception $exception){
+            return [
+                "status" => false,
+                "message" => $exception->getMessage()
+            ];
+        }
+
 
     }
 
@@ -349,7 +449,7 @@ class HertzService
                 foreach ( $nestedChilds as $nestedChildKey => $nestedChildVal ){
 
 
-                    if( isAssocArray($itemData) ){
+                    if( is_array($itemData) && isAssocArray($itemData) ){
                         $mergedParentKey = $key.".".$nestedChildKey;
                         $columnName = $nestedChildVal["colName"];
                         if( isset($columnName) ) $mappedData['items'][0][ $columnName ] = arrayValueByDottedKey( $mergedParentKey, $data );
@@ -376,7 +476,9 @@ class HertzService
             $item['pcode'] = $item['pcode']??'';
             $item['pfamily'] = $item['pfamily']??'';
             $item['rating'] = $item['rating']??0;
-            $item['category'] = isset($item['category'])? ucwords($this->dataSource['VehicleCategory'][ $item['category'] ]) : '';
+            //$item['category'] = isset($item['category'])? ucwords($this->dataSource['VehicleCategory'][ $item['category'] ]) : '';
+            $item['category'] = isset($item['category_code'])? $this->categoryByCarCode( $item['category_code'] ) :
+                                ( isset($item['category'])? ucwords($this->dataSource['VehicleCategory'][ $item['category'] ]) : '' );
             $item['type'] = isset($item['type'])? ucwords($this->dataSource['Size'][ $item['type'] ]) : '';
 
             return $item;
@@ -388,6 +490,17 @@ class HertzService
 
         //collect($mapping);
 
+    }
+
+    private function categoryByCarCode(String $str){
+        $carCodeIDs  = array_keys($this->dataSource['CarCode']);
+        $codeList =  collect(str_split($str))->map(function($item,$index) use($carCodeIDs){
+            return $this->dataSource['CarCode'][ $carCodeIDs[ $index ] ][ $item ]??'';
+        });
+        $filteredResult = $codeList->filter(function($val){
+            return trim($val)!='';
+        });
+        return count($filteredResult)>0?implode($codeList->toArray(),", "):'';
     }
 
 }
